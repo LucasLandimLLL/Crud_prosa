@@ -69,7 +69,12 @@ http://localhost:8000/profile <br/><br/>
 http://localhost:8000/clientes <br/><br/>
 http://localhost:8000/usuarios
 
-### 10. Regras de Negócio 
+### 10. Seeders populada do banco 
+nome: Primeiro Usuário
+Email:admin@example.com
+Senha: senha123
+
+### 11. Regras de Negócio 
 
 # Permissões de Usuários:
 
@@ -97,7 +102,7 @@ Integração com ViaCEP:
 
 O endereço do cliente pode ser buscado automaticamente usando o CEP através da API do ViaCEP.
 
-### 11. Seeders
+### 12. Seeders
 
 Para Popular o banco pode ser usado essas duas criações de seeders
 
