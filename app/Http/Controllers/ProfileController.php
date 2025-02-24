@@ -29,14 +29,18 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        // Preenche o modelo do usuário com os dados validados
         $request->user()->fill($request->validated());
 
+        // Se o e-mail foi alterado, redefine a verificação do e-mail
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
+        // Salva as alterações no banco de dados
         $request->user()->save();
 
+        // Redireciona de volta para a página de edição do perfil
         return Redirect::route('profile.edit');
     }
 
@@ -45,19 +49,25 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Valida a senha fornecida pelo usuário
         $request->validate([
             'password' => ['required', 'current_password'],
         ]);
 
+        // Obtém o usuário autenticado
         $user = $request->user();
 
+        // Realiza o logout do usuário
         Auth::logout();
 
+        // Exclui o usuário do banco de dados
         $user->delete();
 
+        // Invalida a sessão e regenera o token
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        // Redireciona para a página inicial
         return Redirect::to('/');
     }
 }

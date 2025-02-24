@@ -5,6 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Clientes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        .btn-hover-dark {
+            background-color: #0d6efd; 
+            color: #fff; 
+            border: 1px solid #0d6efd; 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+        }
+
+        .btn-hover-dark:hover {
+            background-color: #0b5ed7;
+            border-color: #0b5ed7;
+        }
+
+        /* Estilo para a paginação */
+        .pagination .page-link {
+            background-color: #000; 
+            color: #fff; 
+            border: 0.5px solid #000; 
+        }
+
+        .pagination .page-link:hover {
+            background-color: #333; 
+            color: #fff; 
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #ccc; 
+            color: #000; 
+        }
+
+        .pagination .active .page-link {
+            background-color: #444; 
+            color: #fff; 
+        }
+    </style>
 </head>
 <body class="bg-light">
     <div class="container-fluid mt-5">
@@ -103,11 +139,6 @@
                             <div class="alert alert-warning text-center mb-4">
                                 Nenhum cliente encontrado com o termo "{{ request('pesquisa') }}".
                             </div>
-                            <div class="mb-3 text-center">
-                                <a href="{{ route('clientes.index') }}" class="btn btn-outline-info">
-                                    🔄 Recarregar Todos os Clientes
-                                </a>
-                            </div>
                         @endif
 
                         @if($clientes->isEmpty() && !request('pesquisa'))
@@ -115,6 +146,57 @@
                                 Não há nenhum cliente cadastrado no sistema.
                             </div>
                         @endif
+
+                        <!-- Botão de Recarregar Todos os Clientes (sempre visível se pesquisa for feita) -->
+                        @if(request('pesquisa'))
+                            <div class="mb-3 text-center">
+                                <a href="{{ route('clientes.index') }}" class="btn btn-primary btn-hover-dark">
+                                    Recarregar Todos os Clientes
+                                </a>
+                            </div>
+                        @endif
+
+                        <!-- Paginação -->
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav aria-label="Página de navegação">
+                                <ul class="pagination pagination-lg">
+                                    {{-- Botão "Anterior" --}}
+                                    @if ($clientes->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <span class="page-link" aria-hidden="true">&laquo;</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $clientes->previousPageUrl() . '&pesquisa=' . request('pesquisa') }}" aria-label="Anterior">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                    @endif
+
+                                    {{-- Links das páginas --}}
+                                    @foreach ($clientes->getUrlRange(1, $clientes->lastPage()) as $page => $url)
+                                        <li class="page-item {{ $page == $clientes->currentPage() ? 'active' : '' }}">
+                                            <a class="page-link" href="{{ $url . '&pesquisa=' . request('pesquisa') }}">
+                                                {{ $page }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+
+                                    {{-- Botão "Próximo" --}}
+                                    @if ($clientes->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $clientes->nextPageUrl() . '&pesquisa=' . request('pesquisa') }}" aria-label="Próximo">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <span class="page-link" aria-hidden="true">&raquo;</span>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </nav>
+                        </div>
 
                     </div>
                 </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
+// Rota inicial (página de boas-vindas)
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -24,16 +25,18 @@ Route::get('/dashboard', function () {
 
 // Grupo de rotas autenticadas
 Route::middleware('auth')->group(function () {
+    // Rotas de perfil do usuário
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    // Rotas para Cliente
+
+    // Rota para listar usuários
+    Route::get('/usuarios', [ClienteController::class, 'listarUsuarios'])->name('usuarios.index');
+
+    // Rotas para Clientes (CRUD)
     Route::resource('/clientes', ClienteController::class);
     Route::get('/createuser', [ClienteController::class, 'create'])->name('clientes.createuser');
     Route::delete('/clientes/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
-
-
 });
 
 // Rotas de Login e Registro
@@ -44,6 +47,11 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/register', [RegisteredUserController::class, 'create'])
     ->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
+
+Route::middleware('auth')->group(function () {
+    // Rota para listar usuários
+    Route::get('/usuarios', [ClienteController::class, 'listarUsuarios'])->name('usuarios.index');
+});
 
 // Importando a autenticação padrão do Laravel
 require __DIR__.'/auth.php';

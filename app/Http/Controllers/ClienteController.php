@@ -3,44 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Usuario; // Importação do modelo Usuario
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
     /**
-     * Exibe uma lista de clientes.
+     * Exibe uma lista de clientes com paginação e filtro de pesquisa.
      */
     public function index(Request $request)
     {
-        // Validação do campo de pesquisa
-        $request->validate([
-            'pesquisa' => 'nullable|string',
-        ], [
-            'pesquisa.string' => 'Por favor, insira um termo válido para a pesquisa.',
-        ]);
-    
-        // Verifica se foi fornecido um termo de pesquisa
-        if ($request->has('pesquisa') && $request->pesquisa != '') {
-            // Usando whereRaw para ignorar acentuação e buscar no nome e email
-            $clientes = Cliente::whereRaw('LOWER(nome) LIKE ? OR LOWER(email) LIKE ?', [
-                '%' . preg_replace('/[^A-Za-z0-9]/', '', strtolower($request->pesquisa)) . '%',
-                '%' . preg_replace('/[^A-Za-z0-9]/', '', strtolower($request->pesquisa)) . '%'
-            ])->get();
-    
-            // Se não encontrar nenhum cliente, exibe uma lista vazia
-            if ($clientes->isEmpty()) {
-                return view('clientes.index', ['clientes' => collect(), 'message' => 'Nenhum cliente encontrado.']);
-            }
-        } else {
-            // Se não houver filtro, exibe todos os clientes
-            $clientes = Cliente::all();
-        }
-    
+        // Filtro de pesquisa
+        $pesquisa = $request->input('pesquisa');
+
+        // Busca os clientes com paginação e aplica o filtro de pesquisa, se existir
+        $clientes = Cliente::when($pesquisa, function ($query, $pesquisa) {
+            return $query->where('nome', 'like', "%$pesquisa%")
+                         ->orWhere('email', 'like', "%$pesquisa%");
+        })->paginate(10); // Paginação de 10 registros por página
+
+        // Retorna a view 'clientes.index' com os clientes
         return view('clientes.index', compact('clientes'));
     }
-    
-    
-    
 
     /**
      * Exibe o formulário para criar um novo cliente.
@@ -109,15 +93,31 @@ class ClienteController extends Controller
         return redirect()->route('clientes.index')->with('success', 'Cliente atualizado com sucesso!');
     }
 
-public function destroy(Cliente $cliente)
-{
-    try {
-        $cliente->delete();
-        return redirect()->route('clientes.index')->with('success', 'Cliente excluído com sucesso!');
-    } catch (\Exception $e) {
-        return redirect()->route('clientes.index')->with('error', 'Erro ao excluir o cliente. Por favor, tente novamente.');
-    }
-
+    /**
+     * Exclui um cliente do banco de dados.
+     */
+    public function destroy(Cliente $cliente)
+    {
+        try {
+            $cliente->delete();
+            return redirect()->route('clientes.index')->with('success', 'Cliente excluído com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('clientes.index')->with('error', 'Erro ao excluir o cliente. Por favor, tente novamente.');
+        }
     }
     
+    /**
+     * Exibe uma lista de usuários com paginação e filtro de pesquisa.
+     */
+    public function listarUsuarios(Request $request)
+    {
+        $pesquisa = $request->input('pesquisa');
+
+        $usuarios = Usuario::when($pesquisa, function ($query) use ($pesquisa) {
+            return $query->where('name', 'like', "%{$pesquisa}%")
+                         ->orWhere('email', 'like', "%{$pesquisa}%");
+        })->paginate(10); // Adicionando paginação
+
+        return view('clientes.usuarios', compact('usuarios'));
+    }
 }

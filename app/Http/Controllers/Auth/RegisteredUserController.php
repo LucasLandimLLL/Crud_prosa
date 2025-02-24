@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Usuario; // Certifique-se de que está usando o modelo Usuario
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,12 +33,12 @@ class RegisteredUserController extends Controller
         // Valida os dados do formulário de registro
         $request->validate([
             'name' => 'required|string|max:255', // Nome do usuário, obrigatório, string e com tamanho máximo de 255 caracteres
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class, // Email obrigatório, minúsculo, único e válido
+            'email' => 'required|string|lowercase|email|max:255|unique:usuarios', // Email obrigatório, minúsculo, único e válido (corrigido para 'usuarios')
             'password' => ['required', 'confirmed', Rules\Password::defaults()], // Senha obrigatória, confirmada e com regras padrão
         ]);
 
         // Cria o novo usuário no banco de dados
-        $user = User::create([
+        $user = Usuario::create([
             'name' => $request->name, // Nome do usuário
             'email' => $request->email, // Email do usuário
             'password' => Hash::make($request->password), // Senha do usuário (hash)

@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'guard' => env('AUTH_GUARD', 'web'), // Guard padrão
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'), // Broker padrão para reset de senha
     ],
 
     /*
@@ -37,8 +37,8 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+            'driver' => 'session', // Usa sessão para autenticação
+            'provider' => 'users', // Define o provider como 'users'
         ],
     ],
 
@@ -61,11 +61,11 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-            'model' => App\Models\Usuario::class,
+            'driver' => 'eloquent', // Usa Eloquent para recuperar usuários
+            'model' => App\Models\Usuario::class, // Define o modelo como Usuario
         ],
 
+        // Exemplo de um provider usando a tabela diretamente (não necessário no seu caso)
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -93,10 +93,10 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
+            'provider' => 'users', // Usa o provider 'users' para reset de senha
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'), // Tabela para tokens de reset
+            'expire' => 60, // Tempo de expiração do token (60 minutos)
+            'throttle' => 60, // Tempo de espera para gerar novos tokens (60 segundos)
         ],
     ],
 
@@ -111,6 +111,6 @@ return [
     |
     */
 
-    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800), // Tempo de expiração para confirmação de senha (3 horas)
 
 ];

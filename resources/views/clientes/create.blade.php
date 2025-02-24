@@ -41,7 +41,7 @@
                                    value="{{ old('email') }}"
                                    required>
                             @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">Você não pode cadastrar um e-mail já cadastrado</div>
                             @enderror
                         </div>
 

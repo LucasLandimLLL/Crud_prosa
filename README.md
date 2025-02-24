@@ -17,6 +17,14 @@ composer install
 3. Configurar Variáveis de Ambiente
 Copie o arquivo de exemplo .env:
 
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:Xy4Uzxps6gNMNVgpcjLI/gT28CrTlwaYJRIoXOJguHw=
+APP_DEBUG=true
+APP_TIMEZONE=UTC
+APP_URL=http://localhost:8000
+FRONTEND_URL=http://localhost:3000
+
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -44,3 +52,4 @@ npm install
 
 8. Rodar o Front-End (compilar assets)
 npm run dev
+

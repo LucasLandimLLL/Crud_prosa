@@ -37,7 +37,6 @@ export default function Welcome() {
                             </div>
                         </Col>
 
-                        {/* Imagem */}
                         <Col md={6} className="order-1 order-md-2">
                             <div className="position-relative mx-auto" style={{ maxWidth: '500px' }}>
                                 <div className="ratio ratio-1x1">
@@ -78,10 +77,6 @@ export default function Welcome() {
                     border-color: #198754;
                 }
                 
-                .btn-outline-success:hover {
-                    background-color: #f8f9fa !important;
-                }
-
                 .hover-zoom {
                     transition: transform 0.3s ease;
                 }
