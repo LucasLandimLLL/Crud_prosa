@@ -18,20 +18,20 @@ composer install
 ### 3. Configurar Variáveis de Ambiente
 Copie o arquivo de exemplo .env:
 
-APP_NAME=Laravel
-APP_ENV=local
-APP_KEY=base64:Xy4Uzxps6gNMNVgpcjLI/gT28CrTlwaYJRIoXOJguHw=
-APP_DEBUG=true
-APP_TIMEZONE=UTC
-APP_URL=http://localhost:8000
-FRONTEND_URL=http://localhost:3000
+APP_NAME=Laravel <br/>
+APP_ENV=local <br/>
+APP_KEY= <br/>
+APP_DEBUG=true <br/> 
+APP_TIMEZONE=UTC <br/>
+APP_URL=http://localhost:8000 <br/>
+FRONTEND_URL=http://localhost:3000 <br/>
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=nome_do_banco
-DB_USERNAME=seu_usuario
-DB_PASSWORD=sua_senha
+DB_CONNECTION=mysql <br/>
+DB_HOST=127.0.0.1 <br/> 
+DB_PORT=3306 <br/>
+DB_DATABASE=nome_do_banco <br/>
+DB_USERNAME=seu_usuario <br/>
+DB_PASSWORD=sua_senha <br/>
 
 
 ### 4. Gerar a Chave de Aplicação
@@ -39,7 +39,10 @@ php artisan key:generate
 
 
 ### 5. Rodar Migrações e Seeders
-php artisan migrate --seed
+
+php artisan migrate
+<br/>
+php artisan db:seed --class=UsersTableSeeder
 
 
 ### 6. Rodar o Servidor de Desenvolvimento
@@ -48,7 +51,7 @@ O servidor estará disponível em http://localhost:8000.
 
 ### 7. Instalar Dependências (Frontend)
 instale as dependências:
-npm install
+npm i
 
 
 ### 8. Rodar o Front-End (compilar assets)
