@@ -42,11 +42,15 @@ php artisan key:generate
 
 php artisan migrate
 <br/>
+Crie o banco caso não tenha, escrevendo "yes" no console
+<br/>
 php artisan db:seed --class=UsersTableSeeder
+<br/>
+
 
 
 ### 6. Rodar o Servidor de Desenvolvimento
-php artisan serve
+php artisan serve <br/>
 O servidor estará disponível em http://localhost:8000.
 
 ### 7. Instalar Dependências (Frontend)
@@ -55,6 +59,7 @@ npm i
 
 
 ### 8. Rodar o Front-End (compilar assets)
+rode dependecias:
 npm run dev
 
 ### 9. URLs do Projeto que necessitam atençã
